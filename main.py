@@ -32,32 +32,35 @@ def internet_checker():
     up = -1
     down = -1
     while True:
-        is_connected = internet()
-        os.system('clear')
-        if is_connected:
-            print("up")
-            if (is_tmp != is_connected and up > CONN_TENTATIVE) or up == -1:
-                mixer.init()
-                sound = mixer.Sound("./assets/beepS.wav")
-                sound.play()
-                is_tmp = is_connected
-                down = 0
-            up = 1 if up == -1 else up + 1
-            if up == 10:
-                try:
-                    bot.send_message(chat_id=CHAT_ID, text="connection up 👍")
-                except telebot.ExceptionHandler as ex:
-                    pass
-        else:
-            print("down")
-            if (is_tmp != is_connected and down > CONN_TENTATIVE) or down == -1:
-                mixer.init()
-                sound = mixer.Sound("./assets/beep.wav")
-                sound.play()
-                up = 0
-                is_tmp = is_connected
-            down = 1 if down == -1 else down + 1
-        time.sleep(DELAY)
+        try:
+            is_connected = internet()
+            os.system('clear')
+            if is_connected:
+                print("up")
+                if (is_tmp != is_connected and up > CONN_TENTATIVE) or up == -1:
+                    mixer.init()
+                    sound = mixer.Sound("./assets/beepS.wav")
+                    sound.play()
+                    is_tmp = is_connected
+                    down = 0
+                up = 1 if up == -1 else up + 1
+                if up == 10:
+                    try:
+                        bot.send_message(chat_id=CHAT_ID, text="👍")
+                    except telebot.ExceptionHandler as ex:
+                        pass
+            else:
+                print("down")
+                if (is_tmp != is_connected and down > CONN_TENTATIVE) or down == -1:
+                    mixer.init()
+                    sound = mixer.Sound("./assets/beep.wav")
+                    sound.play()
+                    up = 0
+                    is_tmp = is_connected
+                down = 1 if down == -1 else down + 1
+            time.sleep(DELAY)
+        except Exception as es:
+            pass
 
 
 if __name__ == '__main__':
