@@ -5,7 +5,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
 from PIL import Image
-from time import sleep
 
 PHONE_NUM: int = 620080830
 PWD: int = 12345678
@@ -17,6 +16,11 @@ def image_crop(image_path: str, dimension: tuple = CROP_DIM, output_path: str = 
     im = im.crop(dimension)
     im.save(output_path)
     return output_path
+
+
+def get_catcha(element: webdriver.remote.webelement.WebElement, output: str = './captcha/output.png') -> str:
+    element.screenshot(output)
+    return output
 
 
 def main():
@@ -31,6 +35,8 @@ def main():
     pwd = driver.find_element(by=By.ID, value='userVO_userPassword1')
     code = driver.find_element(by=By.ID, value='checkCodes')
     sumit_btn = driver.find_element(by=By.ID, value='regbutton')
+    captcha_img = driver.find_element(by=By.ID, value='img1')
+    captcha_img.screenshot('./captcha/captcha.png')
 
     name.send_keys(PHONE_NUM)
     pwd.send_keys(PWD)
