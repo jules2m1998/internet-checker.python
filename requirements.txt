@@ -5,6 +5,7 @@ certifi==2021.10.8
 cffi==1.15.0
 charset-normalizer==2.0.11
 cryptography==36.0.1
+EasyProcess==1.1
 h11==0.13.0
 idna==3.3
 outcome==1.1.0
@@ -14,6 +15,7 @@ pygame==2.1.2
 pyOpenSSL==22.0.0
 pyTelegramBotAPI==4.4.0
 python-dotenv==0.19.2
+PyVirtualDisplay==2.2
 requests==2.27.1
 selenium==4.1.0
 six==1.16.0

@@ -1,19 +1,25 @@
 import os
+
 import telebot
 from dotenv import load_dotenv
+from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.action_chains import ActionChains
-from myxtrem import get_catcha
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
 
 load_dotenv()
 
 API_KEY_MYXTRM: str = os.getenv("API_KEY_MYXTRM")
 PHONE_NUM: int = int(os.getenv("PHONE_NUM"))
 PWD: str = str(os.getenv("PASSWRD"))
+
+
+def get_catcha(element: webdriver.remote.webelement.WebElement, output: str = './captcha/output.png') -> str:
+    element.screenshot(output)
+    return output
 
 
 def run_bot(api_key: str) -> None:
@@ -28,6 +34,9 @@ def run_bot(api_key: str) -> None:
         @bot.message_handler(commands=['status'])
         def handle_start_help(message):
             bot.send_message(message.chat.id, "Connexion à myxtremnet...")
+
+            display = Display(visible=False, size=(800, 600))
+            display.start()
 
             opt = webdriver.ChromeOptions()
             s = Service('../assets/chromedriver')
@@ -75,7 +84,9 @@ def run_bot(api_key: str) -> None:
                     data = data + float(nb)
             total = {credit, data}
             print(total)
-            bot.send_message(message.chat.id, f"Votre solde est de **{credit}** FCFA et vos data sont à **{round(data, 3)}** Go", parse_mode="Markdown")
+            bot.send_message(message.chat.id,
+                             f"Votre solde est de **{credit}** FCFA et vos data sont à **{round(data, 3)}** Go",
+                             parse_mode="Markdown")
             driver.close()
 
         bot.infinity_polling(timeout=10)
